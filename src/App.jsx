@@ -1,147 +1,7 @@
 import React from "react";
-import "./App.css";
-
-// export default class App extends React.Component {
-//   state = {
-//     goOut: "Yes",
-//   };
-
-//   toggleOut = () => {
-//     this.setState((prevState) => {
-//       return {
-//         goOut: prevState.goOut === "Yes" ? "No" : "Yes",
-//       };
-//     });
-//   };
-
-//   render() {
-//     return <h1 onClick={this.toggleOut}>{this.state.goOut} Class</h1>;
-//   }
-// }
-
-class Header extends React.Component {
-  render() {
-    return (
-      <header className="header">
-        <h1>Todo List </h1>
-        <h3>Всего задач: {this.props.countTodo}</h3>
-      </header>
-    );
-  }
-}
-
-class Form extends React.Component {
-  render() {
-    return (
-      <form className="form">
-        <input
-          type="text"
-          className="form__input"
-          placeholder="Добавить новую задачу"
-          onChange={this.props.handleChange}
-          value={this.props.todoValue}
-        />
-        <button
-          className="form__button"
-          type="submit"
-          onClick={this.props.handleClick}
-        >
-          ╋
-        </button>
-        <Todo
-          todos={this.props.todos}
-          handleToggle={this.props.handleToggle}
-          handleDelete={this.props.handleDelete}
-        />
-      </form>
-    );
-  }
-}
-
-class Todo extends React.Component {
-  render() {
-    return (
-      <ul className="todos-list">
-        {this.props.todos.map((item) => {
-          return (
-            <li
-              className="todo-item"
-              key={item.id}
-              onClick={() => this.props.handleToggle(item.id)}
-            >
-              <span
-                className={
-                  item.done ? "todo-item__name disabled" : "todo-item__name"
-                }
-              >
-                {item.text}
-              </span>
-              <span
-                className="todo-item__delete-button"
-                onClick={() => this.props.handleDelete(item.id)}
-              >
-                ×
-              </span>
-            </li>
-          );
-        })}
-      </ul>
-    );
-  }
-}
-
-class Footer extends React.Component {
-  isActive = (text) => {
-    let filter = this.props.filter === text ? "active" : "";
-    return `footer__button ${filter}`;
-  };
-
-  render() {
-    return (
-      <footer className="footer">
-        <Button
-          className={this.isActive}
-          text="Все"
-          setActiveFilter={this.props.setActiveFilter}
-        />
-        <Button
-          className={this.isActive}
-          text="Активные"
-          setActiveFilter={this.props.setActiveFilter}
-        />
-        <Button
-          className={this.isActive}
-          text="Выполненные"
-          setActiveFilter={this.props.setActiveFilter}
-        />
-        <ButtonDelete
-          className={"footer__button"}
-          deleteCompleted={this.props.deleteCompleted}
-          text="Удалить выполненные"
-        />
-      </footer>
-    );
-  }
-}
-
-const ButtonDelete = ({ text, className, deleteCompleted }) => {
-  return (
-    <button
-      className={`${className} delete-completed`}
-      onClick={() => deleteCompleted()}
-    >
-      {text}
-    </button>
-  );
-};
-
-const Button = ({ className, text, setActiveFilter }) => {
-  return (
-    <button className={className(text)} onClick={() => setActiveFilter(text)}>
-      {text}
-    </button>
-  );
-};
+import Header from "./components/Header";
+import Form from "./components/Form";
+import Footer from "./components/Footer";
 
 export default class App extends React.Component {
   state = {
@@ -203,7 +63,7 @@ export default class App extends React.Component {
     const filterType = this.state.filterType;
     let filterState = null;
     switch (filterType) {
-      case "Complited":
+      case "Completed":
         return (filterState = this.state.todos.filter((item) => item.done));
       case "Active":
         return (filterState = this.state.todos.filter((item) => !item.done));
