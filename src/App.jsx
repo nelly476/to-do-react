@@ -1,13 +1,14 @@
 import React from "react";
 import Header from "./components/Header";
 import Form from "./components/Form";
-import Footer from "./components/Footer";
+import ControlButtons from "./components/ControlButtons";
 
 export default class App extends React.Component {
   state = {
     todoValue: "",
     filterType: "All",
     todos: [],
+    archivedTodos: [],
   };
 
   handleChange = (event) => {
@@ -53,6 +54,15 @@ export default class App extends React.Component {
     });
   };
 
+  handleArchive = (id) => {
+    const target = this.state.todos.filter((item) => item.id === id)[0];
+    this.setState((prevState) => ({
+      archivedTodos: [...prevState.archivedTodos, target],
+    }));
+    this.handleDelete(id);
+    // console.log(this.state.archivedTodos);
+  };
+
   deleteCompleted = () => {
     this.setState({
       todos: this.state.todos.filter((item) => !item.done),
@@ -67,6 +77,8 @@ export default class App extends React.Component {
         return (filterState = this.state.todos.filter((item) => item.done));
       case "Active":
         return (filterState = this.state.todos.filter((item) => !item.done));
+      case "Archived":
+        return this.state.archivedTodos;
       default:
         return (filterState = this.state.todos);
     }
@@ -82,18 +94,19 @@ export default class App extends React.Component {
     return (
       <div className="container">
         <Header countTodo={this.state.todos.length} />
+        <ControlButtons
+          setActiveFilter={this.setActiveFilter}
+          deleteCompleted={this.deleteCompleted}
+          filter={this.state.filterType}
+        />
         <Form
           handleDelete={this.handleDelete}
+          handleArchive={this.handleArchive}
           handleToggle={this.handleToggle}
           handleClick={this.handleClick}
           handleChange={this.handleChange}
           todoValue={this.state.todoValue}
           todos={this.getVisibleTodos()}
-        />
-        <Footer
-          setActiveFilter={this.setActiveFilter}
-          deleteCompleted={this.deleteCompleted}
-          filter={this.state.filterType}
         />
       </div>
     );

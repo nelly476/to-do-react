@@ -1,6 +1,6 @@
 import React from "react";
 
-export default class Footer extends React.Component {
+export default class ControlButtons extends React.Component {
   isActive = (text) => {
     let filter = this.props.filter === text ? "active" : "";
     return `footer__button ${filter}`;
@@ -22,6 +22,11 @@ export default class Footer extends React.Component {
         <Button
           className={this.isActive}
           text="Completed"
+          setActiveFilter={this.props.setActiveFilter}
+        />
+        <Button
+          className={this.isActive}
+          text="Archived"
           setActiveFilter={this.props.setActiveFilter}
         />
         <ButtonDelete

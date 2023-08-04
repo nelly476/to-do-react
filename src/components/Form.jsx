@@ -16,16 +16,21 @@ class Todo extends React.Component {
               </span>
               <span className="todo-item__buttons">
                 <i
-                  className="fa-regular fa-square-check"
+                  className={
+                    item.done
+                      ? "fa-solid fa-square-check"
+                      : "fa-regular fa-square-check"
+                  }
                   onClick={() => this.props.handleToggle(item.id)}
                 ></i>
-                <i className="fa-solid fa-box-archive"></i>
-                <span
-                  className="todo-item__delete-button"
+                <i
+                  className="fa-solid fa-box-archive"
+                  onClick={() => this.props.handleArchive(item.id)}
+                ></i>
+                <i
+                  className="fa-solid fa-delete-left"
                   onClick={() => this.props.handleDelete(item.id)}
-                >
-                  ×
-                </span>
+                ></i>
               </span>
             </li>
           );
@@ -39,24 +44,28 @@ export default class Form extends React.Component {
   render() {
     return (
       <form className="form">
-        <input
-          type="text"
-          className="form__input"
-          placeholder="Добавить новую задачу"
-          onChange={this.props.handleChange}
-          value={this.props.todoValue}
-        />
-        <button
-          className="form__button"
-          type="submit"
-          onClick={this.props.handleClick}
-        >
-          +
-        </button>
+        <div className="form__input-section">
+          <input
+            type="text"
+            className="form__input"
+            placeholder="Add a new task..."
+            onChange={this.props.handleChange}
+            value={this.props.todoValue}
+          />
+          <button
+            className="form__button"
+            type="submit"
+            onClick={this.props.handleClick}
+          >
+            +
+          </button>
+        </div>
+
         <Todo
           todos={this.props.todos}
           handleToggle={this.props.handleToggle}
           handleDelete={this.props.handleDelete}
+          handleArchive={this.props.handleArchive}
         />
       </form>
     );

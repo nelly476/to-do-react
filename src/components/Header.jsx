@@ -5,7 +5,7 @@ export default class Header extends React.Component {
     return (
       <header className="header">
         <h1>Todo List </h1>
-        <h3>Всего задач: {this.props.countTodo}</h3>
+        <h3>All tasks: {this.props.countTodo}</h3>
       </header>
     );
   }
