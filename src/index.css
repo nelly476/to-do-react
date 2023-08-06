@@ -12,6 +12,14 @@ body {
   height: 100vh;
 }
 
+.black {
+  background-color: black;
+}
+
+.white {
+  background-color: white;
+}
+
 .container {
   margin: 0 auto;
 }
@@ -49,7 +57,7 @@ h2 {
 }
 
 .form__button {
-  background: #11324d;
+  /* background: #11324d; */
   border: 1px solid black;
   border-radius: 5px;
   cursor: pointer;
@@ -61,18 +69,25 @@ h2 {
   vertical-align: top;
   width: 115px;
   outline: none;
-  color: #ecf2ff;
+  /* color: #ecf2ff; */
 }
 
 .form__button:hover {
   opacity: 0.95;
 }
 
+header {
+  height: 15%;
+}
+
+footer {
+  height: 5%;
+}
+
 .form {
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 70vh;
 }
 
 .todos-list {

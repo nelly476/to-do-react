@@ -1,5 +1,6 @@
 import React from "react";
 import { ThemeContext } from "./ThemeContext";
+import DebouncedSearchInput from "./DebouncedSearchInput";
 
 export default class Header extends React.Component {
   render() {
@@ -16,6 +17,7 @@ export default class Header extends React.Component {
             <h1>Todo List </h1>
             <h3>All tasks: {this.props.countTodo}</h3>
             <button onClick={toggleTheme}>Toggle Theme</button>
+            <DebouncedSearchInput onSearch={this.props.onSearch} />
           </header>
         )}
       </ThemeContext.Consumer>
