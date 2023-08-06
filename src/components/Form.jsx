@@ -1,4 +1,5 @@
 import React from "react";
+import { ThemeContext } from "./ThemeContext";
 
 class Todo extends React.Component {
   render() {
@@ -54,39 +55,52 @@ class Todo extends React.Component {
 export default class Form extends React.Component {
   render() {
     return (
-      <form className="form">
-        <div className="form__input-section">
-          <span>
-            <input
-              type="text"
-              className="form__input"
-              placeholder="Add a new task title..."
-              onChange={this.props.handleTitleChange}
-              value={this.props.todoTitleValue}
-            />
-            <input
-              type="text"
-              className="form__input"
-              placeholder="Add a new task description..."
-              onChange={this.props.handleDescriptionChange}
-              value={this.props.todoDescriptionValue}
-            />
-          </span>
-          <button
-            className="form__button"
-            type="submit"
-            onClick={this.props.handleClick}
+      <ThemeContext.Consumer>
+        {({ theme }) => (
+          <form
+            className="form"
+            style={{
+              backgroundColor: theme.background,
+              color: theme.foreground,
+            }}
           >
-            +
-          </button>
-        </div>
-        <Todo
-          todos={this.props.todos}
-          handleToggle={this.props.handleToggle}
-          handleDelete={this.props.handleDelete}
-          handleArchive={this.props.handleArchive}
-        />
-      </form>
+            <div className="form__input-section">
+              <span>
+                <input
+                  type="text"
+                  className="form__input"
+                  placeholder="Add a new task title..."
+                  onChange={this.props.handleTitleChange}
+                  value={this.props.todoTitleValue}
+                />
+              </span>
+              <span>
+                <input
+                  type="text"
+                  className="form__input"
+                  placeholder="Add a new task description..."
+                  onChange={this.props.handleDescriptionChange}
+                  value={this.props.todoDescriptionValue}
+                />
+              </span>
+              <button
+                className="form__button"
+                type="submit"
+                onClick={this.props.handleClick}
+              >
+                +
+              </button>
+            </div>
+
+            <Todo
+              todos={this.props.todos}
+              handleToggle={this.props.handleToggle}
+              handleDelete={this.props.handleDelete}
+              handleArchive={this.props.handleArchive}
+            />
+          </form>
+        )}
+      </ThemeContext.Consumer>
     );
   }
 }

@@ -3,8 +3,11 @@ import Header from "./components/Header";
 import Form from "./components/Form";
 import ControlButtons from "./components/ControlButtons";
 
+import { ThemeContext, themes } from "./components/ThemeContext";
+
 export default class App extends React.Component {
   state = {
+    theme: themes.light,
     todoTitleValue: "",
     todoDescriptionValue: "",
     filterType: "All",
@@ -30,18 +33,20 @@ export default class App extends React.Component {
       this.state.todoTitleValue !== "" &&
       this.state.todoTitleValue.length >= 2
     ) {
-      console.log("h");
       const todo = {
         id: Date.now(),
         title: this.state.todoTitleValue,
         description: this.state.todoDescriptionValue,
         done: false,
       };
-      this.setState({
-        todoTitleValue: "",
-        todoDescriptionValue: "",
-        todos: [todo, ...this.state.todos],
-      });
+      this.setState(
+        {
+          todoTitleValue: "",
+          todoDescriptionValue: "",
+          todos: [todo, ...this.state.todos],
+        },
+        this.saveToLocalStorage
+      );
     }
   };
 
@@ -58,28 +63,36 @@ export default class App extends React.Component {
           return item;
         }),
       };
-    });
+    }, this.saveToLocalStorage);
   };
 
   handleDelete = (id) => {
-    this.setState({
-      todos: this.state.todos.filter((item) => item.id !== id),
-    });
+    this.setState(
+      {
+        todos: this.state.todos.filter((item) => item.id !== id),
+      },
+      this.saveToLocalStorage
+    );
   };
 
   handleArchive = (id) => {
     const target = this.state.todos.filter((item) => item.id === id)[0];
-    this.setState((prevState) => ({
-      archivedTodos: [...prevState.archivedTodos, target],
-    }));
+    this.setState(
+      (prevState) => ({
+        archivedTodos: [...prevState.archivedTodos, target],
+      }),
+      this.saveToLocalStorage
+    );
     this.handleDelete(id);
-    // console.log(this.state.archivedTodos);
   };
 
   deleteCompleted = () => {
-    this.setState({
-      todos: this.state.todos.filter((item) => !item.done),
-    });
+    this.setState(
+      {
+        todos: this.state.todos.filter((item) => !item.done),
+      },
+      this.saveToLocalStorage
+    );
   };
 
   getVisibleTodos = () => {
@@ -103,27 +116,62 @@ export default class App extends React.Component {
     });
   };
 
+  toggleTheme = () => {
+    this.setState((state) => ({
+      theme: state.theme === themes.dark ? themes.light : themes.dark,
+    }));
+  };
+
+  saveToLocalStorage = () => {
+    localStorage.setItem("todos", JSON.stringify(this.state.todos));
+    localStorage.setItem(
+      "archivedTodos",
+      JSON.stringify(this.state.archivedTodos)
+    );
+  };
+
+  loadFromLocalStorage = () => {
+    const todos = localStorage.getItem("todos");
+    const archivedTodos = localStorage.getItem("archivedTodos");
+
+    if (todos) {
+      this.setState({ todos: JSON.parse(todos) });
+    }
+
+    if (archivedTodos) {
+      this.setState({ archivedTodos: JSON.parse(archivedTodos) });
+    }
+  };
+
+  componentDidMount() {
+    this.loadFromLocalStorage();
+  }
+
   render() {
     return (
-      <div className="container">
-        <Header countTodo={this.state.todos.length} />
-        <ControlButtons
-          setActiveFilter={this.setActiveFilter}
-          deleteCompleted={this.deleteCompleted}
-          filter={this.state.filterType}
-        />
-        <Form
-          handleTitleChange={this.handleTitleChange}
-          handleDescriptionChange={this.handleDescriptionChange}
-          handleDelete={this.handleDelete}
-          handleArchive={this.handleArchive}
-          handleToggle={this.handleToggle}
-          handleClick={this.handleClick}
-          todoTitleValue={this.state.todoTitleValue}
-          todoDescriptionValue={this.state.todoDescriptionValue}
-          todos={this.getVisibleTodos()}
-        />
-      </div>
+      <ThemeContext.Provider
+        value={{ theme: this.state.theme, toggleTheme: this.toggleTheme }}
+      >
+        <div className="container">
+          <Header countTodo={this.state.todos.length} />
+          <ControlButtons
+            setActiveFilter={this.setActiveFilter}
+            deleteCompleted={this.deleteCompleted}
+            filter={this.state.filterType}
+          />
+          <Form
+            handleTitleChange={this.handleTitleChange}
+            handleDescriptionChange={this.handleDescriptionChange}
+            handleDelete={this.handleDelete}
+            handleArchive={this.handleArchive}
+            handleToggle={this.handleToggle}
+            handleClick={this.handleClick}
+            todoTitleValue={this.state.todoTitleValue}
+            todoDescriptionValue={this.state.todoDescriptionValue}
+            todos={this.getVisibleTodos()}
+          />
+        </div>
+      </ThemeContext.Provider>
     );
   }
 }
