@@ -7,12 +7,23 @@ class Todo extends React.Component {
         {this.props.todos.map((item) => {
           return (
             <li className="todo-item" key={item.id}>
-              <span
-                className={
-                  item.done ? "todo-item__name disabled" : "todo-item__name"
-                }
-              >
-                {item.text}
+              <span className="todo-item__task-description">
+                <h2
+                  className={
+                    item.done ? "todo-item__title disabled" : "todo-item__title"
+                  }
+                >
+                  {item.title}
+                </h2>
+                <p
+                  className={
+                    item.done
+                      ? "todo-item__description disabled"
+                      : "todo-item__description"
+                  }
+                >
+                  {item.description}
+                </p>
               </span>
               <span className="todo-item__buttons">
                 <i
@@ -45,13 +56,22 @@ export default class Form extends React.Component {
     return (
       <form className="form">
         <div className="form__input-section">
-          <input
-            type="text"
-            className="form__input"
-            placeholder="Add a new task..."
-            onChange={this.props.handleChange}
-            value={this.props.todoValue}
-          />
+          <span>
+            <input
+              type="text"
+              className="form__input"
+              placeholder="Add a new task title..."
+              onChange={this.props.handleTitleChange}
+              value={this.props.todoTitleValue}
+            />
+            <input
+              type="text"
+              className="form__input"
+              placeholder="Add a new task description..."
+              onChange={this.props.handleDescriptionChange}
+              value={this.props.todoDescriptionValue}
+            />
+          </span>
           <button
             className="form__button"
             type="submit"
@@ -60,7 +80,6 @@ export default class Form extends React.Component {
             +
           </button>
         </div>
-
         <Todo
           todos={this.props.todos}
           handleToggle={this.props.handleToggle}

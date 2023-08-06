@@ -5,28 +5,41 @@ import ControlButtons from "./components/ControlButtons";
 
 export default class App extends React.Component {
   state = {
-    todoValue: "",
+    todoTitleValue: "",
+    todoDescriptionValue: "",
     filterType: "All",
     todos: [],
     archivedTodos: [],
   };
 
-  handleChange = (event) => {
+  handleTitleChange = (event) => {
     this.setState({
-      todoValue: event.target.value,
+      todoTitleValue: event.target.value,
+    });
+  };
+
+  handleDescriptionChange = (event) => {
+    this.setState({
+      todoDescriptionValue: event.target.value,
     });
   };
 
   handleClick = (event) => {
     event.preventDefault();
-    if (this.state.todoValue !== "") {
+    if (
+      this.state.todoTitleValue !== "" &&
+      this.state.todoTitleValue.length >= 2
+    ) {
+      console.log("h");
       const todo = {
         id: Date.now(),
-        text: this.state.todoValue,
+        title: this.state.todoTitleValue,
+        description: this.state.todoDescriptionValue,
         done: false,
       };
       this.setState({
-        todoValue: "",
+        todoTitleValue: "",
+        todoDescriptionValue: "",
         todos: [todo, ...this.state.todos],
       });
     }
@@ -100,12 +113,14 @@ export default class App extends React.Component {
           filter={this.state.filterType}
         />
         <Form
+          handleTitleChange={this.handleTitleChange}
+          handleDescriptionChange={this.handleDescriptionChange}
           handleDelete={this.handleDelete}
           handleArchive={this.handleArchive}
           handleToggle={this.handleToggle}
           handleClick={this.handleClick}
-          handleChange={this.handleChange}
-          todoValue={this.state.todoValue}
+          todoTitleValue={this.state.todoTitleValue}
+          todoDescriptionValue={this.state.todoDescriptionValue}
           todos={this.getVisibleTodos()}
         />
       </div>

@@ -11,7 +11,8 @@ body {
   /* width: 50%; */
 }
 
-h1 {
+h1,
+h2 {
   margin: 0;
 }
 
@@ -70,21 +71,27 @@ h1 {
 
 .todos-list {
   font-size: 1.4em;
-  width: 50%;
+  width: 45%;
 }
 
 .todo-item {
   border-bottom: 2px solid #837c7c;
   cursor: pointer;
-  line-height: 40px;
+  /* line-height: 40px; */
   display: flex;
-  justify-content: space-between;
+  /* justify-content: space-between; */
+}
+
+.todo-item__task-description {
+  width: 70%;
 }
 
 .todo-item__buttons {
   display: flex;
   align-items: center;
+  justify-content: flex-end;
   column-gap: 10px;
+  width: 30%;
 }
 
 .footer,
@@ -134,6 +141,11 @@ h1 {
 
 .disabled {
   text-decoration: line-through;
+}
+
+i {
+  width: 1.4em;
+  height: 1.4em;
 }
 
 i:hover {
