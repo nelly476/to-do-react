@@ -7,12 +7,17 @@ import { ThemeContext, themes } from "./components/ThemeContext";
 
 export default class App extends React.Component {
   state = {
+    searchValue: "",
     theme: themes.light,
     todoTitleValue: "",
     todoDescriptionValue: "",
     filterType: "All",
     todos: [],
     archivedTodos: [],
+  };
+
+  handleSearch = (value) => {
+    this.setState({ searchValue: value });
   };
 
   handleTitleChange = (event) => {
@@ -97,17 +102,23 @@ export default class App extends React.Component {
 
   getVisibleTodos = () => {
     const filterType = this.state.filterType;
+    const searchValue = this.state.searchValue.toLowerCase();
     let filterState = null;
     switch (filterType) {
       case "Completed":
-        return (filterState = this.state.todos.filter((item) => item.done));
+        filterState = this.state.todos.filter((item) => item.done);
+        break;
       case "Active":
-        return (filterState = this.state.todos.filter((item) => !item.done));
+        filterState = this.state.todos.filter((item) => !item.done);
+        break;
       case "Archived":
         return this.state.archivedTodos;
       default:
-        return (filterState = this.state.todos);
+        filterState = this.state.todos;
     }
+    return filterState.filter((item) =>
+      item.title.toLowerCase().includes(searchValue)
+    );
   };
 
   setActiveFilter = (text) => {
@@ -152,8 +163,11 @@ export default class App extends React.Component {
       <ThemeContext.Provider
         value={{ theme: this.state.theme, toggleTheme: this.toggleTheme }}
       >
-        <div className="container">
-          <Header countTodo={this.state.todos.length} />
+        <div className={`${this.state.theme.background} container`}>
+          <Header
+            countTodo={this.state.todos.length}
+            onSearch={this.handleSearch}
+          />
           <ControlButtons
             setActiveFilter={this.setActiveFilter}
             deleteCompleted={this.deleteCompleted}
