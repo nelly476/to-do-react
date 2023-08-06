@@ -24,6 +24,12 @@ body {
   margin: 0 auto;
 }
 
+.toggle__button {
+  position: absolute;
+  top: 2em;
+  right: 2em;
+}
+
 h1,
 h2 {
   margin: 0;
