@@ -72,23 +72,49 @@ export default class App extends React.Component {
   };
 
   handleDelete = (id) => {
+    const { todos, archivedTodos } = this.state;
+    const isInTodos = todos.some((todo) => todo.id === id);
+    const isInArchivedTodos = archivedTodos.some((todo) => todo.id === id);
+
     this.setState(
       {
-        todos: this.state.todos.filter((item) => item.id !== id),
+        todos: isInTodos ? todos.filter((todo) => todo.id !== id) : todos,
+        archivedTodos: isInArchivedTodos
+          ? archivedTodos.filter((todo) => todo.id !== id)
+          : archivedTodos,
       },
       this.saveToLocalStorage
     );
   };
 
   handleArchive = (id) => {
-    const target = this.state.todos.filter((item) => item.id === id)[0];
-    this.setState(
-      (prevState) => ({
-        archivedTodos: [...prevState.archivedTodos, target],
-      }),
-      this.saveToLocalStorage
+    // Check if the todo is already in the archivedTodos array
+    const archivedTodoIndex = this.state.archivedTodos.findIndex(
+      (todo) => todo.id === id
     );
-    this.handleDelete(id);
+    if (archivedTodoIndex !== -1) {
+      // If the todo is already archived, unarchive it
+      const unarchivedTodo = this.state.archivedTodos[archivedTodoIndex];
+      this.setState(
+        (prevState) => ({
+          todos: [unarchivedTodo, ...prevState.todos],
+          archivedTodos: prevState.archivedTodos.filter(
+            (_, index) => index !== archivedTodoIndex
+          ),
+        }),
+        this.saveToLocalStorage
+      );
+    } else {
+      // If the todo is not archived, archive it
+      const todoToArchive = this.state.todos.find((todo) => todo.id === id);
+      this.setState(
+        (prevState) => ({
+          todos: prevState.todos.filter((todo) => todo.id !== id),
+          archivedTodos: [todoToArchive, ...prevState.archivedTodos],
+        }),
+        this.saveToLocalStorage
+      );
+    }
   };
 
   deleteCompleted = () => {
