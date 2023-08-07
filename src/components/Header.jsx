@@ -17,9 +17,14 @@ export default class Header extends React.Component {
             <h1>Todo List </h1>
             <h3>All tasks: {this.props.countTodo}</h3>
 
-            <button onClick={toggleTheme} className="toggle__button">
-              Toggle Theme
-            </button>
+            <i
+              className={
+                theme.background === "black"
+                  ? " toggle__button fa-solid fa-toggle-on"
+                  : " toggle__button fa-solid fa-toggle-off"
+              }
+              onClick={toggleTheme}
+            ></i>
             <DebouncedSearchInput onSearch={this.props.onSearch} />
           </header>
         )}

@@ -28,6 +28,8 @@ body {
   position: absolute;
   top: 2em;
   right: 2em;
+  cursor: pointer;
+  font-size: 1.8em;
 }
 
 h1,
