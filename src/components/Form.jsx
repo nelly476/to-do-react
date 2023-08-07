@@ -9,13 +9,13 @@ class Todo extends React.Component {
           return (
             <li className="todo-item" key={item.id}>
               <span className="todo-item__task-description">
-                <h2
+                <h4
                   className={
                     item.done ? "todo-item__title disabled" : "todo-item__title"
                   }
                 >
                   {item.title}
-                </h2>
+                </h4>
                 <p
                   className={
                     item.done
@@ -65,7 +65,7 @@ export default class Form extends React.Component {
             }}
           >
             <div className="form__input-section">
-              <span>
+              <span className="form__input__span">
                 <input
                   type="text"
                   className="form__input"
@@ -73,8 +73,6 @@ export default class Form extends React.Component {
                   onChange={this.props.handleTitleChange}
                   value={this.props.todoTitleValue}
                 />
-              </span>
-              <span>
                 <input
                   type="text"
                   className="form__input"
